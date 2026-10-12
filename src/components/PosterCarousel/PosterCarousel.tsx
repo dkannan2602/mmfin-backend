@@ -62,30 +62,17 @@ export default function PosterCarousel() {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="text-blue-700 font-semibold text-sm uppercase tracking-widest">
-            Our Loan Schemes
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-2 mb-4">
-            Featured Loan Products
-          </h2>
-          <p className="text-gray-500 max-w-xl mx-auto text-base">
-            Explore our comprehensive range of loan solutions designed for every need.
-          </p>
-        </div>
-
+    <section className="py-0 bg-white">
+      <div className="w-full">
         {/* Carousel Container */}
         <div className="relative">
           {/* Embla Carousel */}
-          <div className="overflow-hidden rounded-2xl shadow-lg" ref={emblaRef}>
+          <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
             <div className="flex">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 relative h-96 sm:h-[500px]"
+                  className="flex-[0_0_100%] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px]"
                 >
                   <Image
                     src={image.src}
@@ -116,7 +103,7 @@ export default function PosterCarousel() {
           </button>
 
           {/* Dots Indicator */}
-          <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center justify-center gap-2 mt-6 pb-6">
             {images.map((_, index) => (
               <button
                 key={index}
@@ -130,11 +117,6 @@ export default function PosterCarousel() {
               />
             ))}
           </div>
-        </div>
-
-        {/* Slide Counter */}
-        <div className="text-center mt-6 text-gray-600 text-sm">
-          Slide {selectedIndex + 1} of {images.length}
         </div>
       </div>
     </section>
