@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${poppins.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-poppins)]">
+      <body className="min-h-full flex flex-col font-(family-name:--font-poppins)">
         {children}
       </body>
     </html>
