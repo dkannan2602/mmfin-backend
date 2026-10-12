@@ -76,13 +76,13 @@ export default function PosterCarousel() {
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_calc(100%/3-1rem)] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px] rounded-2xl overflow-hidden"
+                  className="flex-[0_0_calc(100%/1-1rem)] sm:flex-[0_0_calc(100%/2-1rem)] lg:flex-[0_0_calc(100%/3-1rem)] min-w-0 relative h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl overflow-hidden"
                 >
                   <Image
                     src={image.src}
                     alt={image.alt}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     priority={index === 0}
                   />
                 </div>
