@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      {/* pt-32 offsets the fixed navbar with top info bar */}
-      <main className="pt-32">
+      {/* pt-24 accounts for fixed navbar + top info bar height */}
+      <main className="pt-24">
         <HeroSection />
         <AboutSection />
         <ServicesSection />
