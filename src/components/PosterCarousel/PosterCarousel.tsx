@@ -28,16 +28,10 @@ const images = [
   },
 ];
 
-const displayImages = [
-  ...images,
-  // Add first image again at end for seamless loop spacing
-  images[0]
-];
-
 export default function PosterCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
-    align: "start",
+    align: "center",
     slidesToScroll: 1
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -63,7 +57,7 @@ export default function PosterCarousel() {
 
     const autoScroll = setInterval(() => {
       emblaApi.scrollNext();
-    }, 3000); // Auto-scroll every 3 seconds (slide by 1 image)
+    }, 3000); // Auto-scroll every 3 seconds
 
     return () => {
       clearInterval(autoScroll);
@@ -72,17 +66,21 @@ export default function PosterCarousel() {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="py-0 bg-white">
-      <div className="w-full px-4">
+    <section className="py-8 bg-white">
+      <div className="w-full">
         {/* Carousel Container */}
         <div className="relative">
           {/* Embla Carousel */}
           <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
-            <div className="flex gap-4 pr-4">
-              {displayImages.map((image, index) => (
+            <div className="flex gap-6 px-4">
+              {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_calc(100%/1-1rem)] sm:flex-[0_0_calc(100%/2-1rem)] lg:flex-[0_0_calc(100%/3-1rem)] min-w-0 relative h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl overflow-hidden"
+                  className={`flex-[0_0_calc(100%/1)] sm:flex-[0_0_calc(100%/2)] lg:flex-[0_0_calc(100%/3)] min-w-0 relative h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl overflow-hidden transition-all duration-300 ${
+                    index === selectedIndex
+                      ? "scale-100 opacity-100"
+                      : "scale-95 opacity-70"
+                  }`}
                 >
                   <Image
                     src={image.src}
