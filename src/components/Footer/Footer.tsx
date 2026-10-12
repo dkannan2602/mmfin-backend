@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Twitter } from "lucide-react";
 import {
-  Facebook,
-  Instagram,
-  MessageCircle,
-  Twitter,
-} from "lucide-react";
+  BrandFacebook,
+  BrandInstagram,
+  BrandWhatsapp,
+} from "tabler-icons-react";
 
 const footerLinks = {
   Services: [
@@ -56,9 +56,9 @@ export default function Footer() {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: Facebook, label: "Facebook", href: "#" },
-                { icon: Instagram, label: "Instagram", href: "#" },
-                { icon: MessageCircle, label: "WhatsApp", href: "#" },
+                { icon: BrandFacebook, label: "Facebook", href: "#" },
+                { icon: BrandInstagram, label: "Instagram", href: "#" },
+                { icon: BrandWhatsapp, label: "WhatsApp", href: "#" },
                 { icon: Twitter, label: "Twitter", href: "#" },
               ].map((social) => (
                 <a

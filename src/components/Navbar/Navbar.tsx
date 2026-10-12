@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, Facebook, Instagram, MessageCircle, Twitter } from "lucide-react";
+import { Mail, Phone, Twitter } from "lucide-react";
+import {
+  BrandFacebook,
+  BrandInstagram,
+  BrandWhatsapp,
+} from "tabler-icons-react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -40,9 +45,9 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <span className="text-gray-300">Follow:</span>
             {[
-              { icon: Facebook, href: "#", label: "Facebook" },
-              { icon: Instagram, href: "#", label: "Instagram" },
-              { icon: MessageCircle, href: "#", label: "WhatsApp" },
+              { icon: BrandFacebook, href: "#", label: "Facebook" },
+              { icon: BrandInstagram, href: "#", label: "Instagram" },
+              { icon: BrandWhatsapp, href: "#", label: "WhatsApp" },
               { icon: Twitter, href: "#", label: "Twitter" },
             ].map((social) => (
               <a
