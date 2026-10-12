@@ -1,6 +1,22 @@
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export default function HeroSection() {
+  const [selectedLoan, setSelectedLoan] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+
+  const loanTypes = [
+    "Home Loan",
+    "Personal Loan",
+    "Business Loan",
+    "Vehicle Loan",
+    "Loan Against Property",
+    "Education Loan",
+  ];
+
   return (
     <section
       id="home"
@@ -67,30 +83,41 @@ export default function HeroSection() {
               Quick Loan Check
             </h3>
             <div className="flex flex-col gap-4">
-              <select className="w-full bg-white/10 border border-white/30 text-white rounded-xl px-4 py-3 text-sm placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                <option value="" className="text-gray-800">
-                  Select Loan Type
-                </option>
-                <option value="home" className="text-gray-800">
-                  Home Loan
-                </option>
-                <option value="personal" className="text-gray-800">
-                  Personal Loan
-                </option>
-                <option value="business" className="text-gray-800">
-                  Business Loan
-                </option>
-                <option value="vehicle" className="text-gray-800">
-                  Vehicle Loan
-                </option>
-                <option value="lap" className="text-gray-800">
-                  Loan Against Property
-                </option>
-              </select>
+              {/* Radix Dropdown for Loan Type */}
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                  <button className="w-full bg-white/10 border border-white/30 text-white rounded-xl px-4 py-3 text-sm placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 hover:bg-white/20 transition-colors flex items-center justify-between">
+                    {selectedLoan || "Select Loan Type"}
+                    <ChevronDown size={16} className="ml-2" />
+                  </button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Portal>
+                  <DropdownMenu.Content
+                    className="bg-blue-950 border border-white/30 rounded-xl shadow-2xl z-50 min-w-[280px]"
+                    sideOffset={5}
+                  >
+                    {loanTypes.map((loanType) => (
+                      <DropdownMenu.Item
+                        key={loanType}
+                        onClick={() => setSelectedLoan(loanType)}
+                        className="px-4 py-3 text-sm text-white hover:bg-white/10 cursor-pointer outline-none flex items-center justify-between transition-colors"
+                      >
+                        {loanType}
+                        {selectedLoan === loanType && (
+                          <span className="text-cyan-300">✓</span>
+                        )}
+                      </DropdownMenu.Item>
+                    ))}
+                  </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+              </DropdownMenu.Root>
+
               <input
                 type="tel"
                 placeholder="Your Mobile Number"
-                className="w-full bg-white/10 border border-white/30 text-white placeholder-blue-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                value={mobileNumber}
+                onChange={(e) => setMobileNumber(e.target.value)}
+                className="w-full bg-white/10 border border-white/30 text-white placeholder-blue-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 hover:bg-white/20 transition-colors"
               />
               <a
                 href="#contact"

@@ -214,21 +214,21 @@ export default function ContactSection() {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild>
                       <button
-                        className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                        className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 flex items-center justify-between hover:bg-gray-50 transition-colors w-full"
                         aria-label="Loan type"
                       >
                         {form.loanType || "Select loan type"}
-                        <ChevronDown size={16} className="ml-2" />
+                        <ChevronDown size={16} className="ml-2 text-gray-400" />
                       </button>
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Portal>
                       <DropdownMenu.Content
-                        className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[250px]"
+                        className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[280px]"
                         sideOffset={5}
                       >
                         <DropdownMenu.Item
                           onClick={() => handleLoanTypeSelect("")}
-                          className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer outline-none"
+                          className="px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer outline-none transition-colors"
                         >
                           Select loan type
                         </DropdownMenu.Item>
@@ -237,11 +237,11 @@ export default function ContactSection() {
                           <DropdownMenu.Item
                             key={loanType}
                             onClick={() => handleLoanTypeSelect(loanType)}
-                            className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer outline-none flex items-center justify-between"
+                            className="px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer outline-none flex items-center justify-between transition-colors"
                           >
                             {loanType}
                             {form.loanType === loanType && (
-                              <span className="text-blue-700">✓</span>
+                              <span className="text-blue-700 font-semibold">✓</span>
                             )}
                           </DropdownMenu.Item>
                         ))}
