@@ -28,6 +28,12 @@ const images = [
   },
 ];
 
+const displayImages = [
+  ...images,
+  // Add first image again at end for seamless loop spacing
+  images[0]
+];
+
 export default function PosterCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: true,
@@ -73,7 +79,7 @@ export default function PosterCarousel() {
           {/* Embla Carousel */}
           <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
             <div className="flex gap-4 pr-4">
-              {images.map((image, index) => (
+              {displayImages.map((image, index) => (
                 <div
                   key={index}
                   className="flex-[0_0_calc(100%/1-1rem)] sm:flex-[0_0_calc(100%/2-1rem)] lg:flex-[0_0_calc(100%/3-1rem)] min-w-0 relative h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl overflow-hidden"
