@@ -227,7 +227,7 @@ export default function ContactSection() {
                         <ChevronDown size={16} className="ml-2 text-gray-400" />
                       </button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-full bg-white border border-gray-200 rounded-xl">
+                    <DropdownMenuContent className="bg-white border border-gray-200 rounded-xl" style={{ width: "var(--radix-dropdown-menu-trigger-width)" }}>
                       <DropdownMenuItem
                         onClick={() => handleLoanTypeSelect("")}
                         className="text-gray-700 cursor-pointer"

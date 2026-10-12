@@ -96,7 +96,7 @@ export default function HeroSection() {
                     <ChevronDown size={16} className="ml-2" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full bg-blue-950 border border-white/30 rounded-xl">
+                <DropdownMenuContent className="bg-blue-950 border border-white/30 rounded-xl" style={{ width: "var(--radix-dropdown-menu-trigger-width)" }}>
                   {loanTypes.map((loanType) => (
                     <DropdownMenuItem
                       key={loanType}
