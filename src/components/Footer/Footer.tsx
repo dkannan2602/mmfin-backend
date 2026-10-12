@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import { useEffect, useState } from "react";
 import {
   Facebook,
   Instagram,
@@ -30,6 +31,12 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-gray-950 text-gray-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -91,7 +98,7 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} RealFinance. All rights reserved.
+            &copy; {year || new Date().getFullYear()} RealFinance. All rights reserved.
           </p>
           <p className="text-gray-600 text-xs">
             Designed & developed for our customers
