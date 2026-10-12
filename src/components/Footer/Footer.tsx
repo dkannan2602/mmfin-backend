@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   Facebook,
   Instagram,
-  Linkedin,
+  MessageCircle,
   Twitter,
 } from "lucide-react";
 
@@ -58,7 +58,7 @@ export default function Footer() {
               {[
                 { icon: Facebook, label: "Facebook", href: "#" },
                 { icon: Instagram, label: "Instagram", href: "#" },
-                { icon: Linkedin, label: "LinkedIn", href: "#" },
+                { icon: MessageCircle, label: "WhatsApp", href: "#" },
                 { icon: Twitter, label: "Twitter", href: "#" },
               ].map((social) => (
                 <a

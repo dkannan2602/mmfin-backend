@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Mail, Phone, Facebook, Instagram, MessageCircle, Twitter } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -42,7 +42,7 @@ export default function Navbar() {
             {[
               { icon: Facebook, href: "#", label: "Facebook" },
               { icon: Instagram, href: "#", label: "Instagram" },
-              { icon: Linkedin, href: "#", label: "LinkedIn" },
+              { icon: MessageCircle, href: "#", label: "WhatsApp" },
               { icon: Twitter, href: "#", label: "Twitter" },
             ].map((social) => (
               <a
