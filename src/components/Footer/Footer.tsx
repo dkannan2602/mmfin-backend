@@ -1,3 +1,7 @@
+"use client"
+import React from "react";
+
+
 const footerLinks = {
   Services: [
     { label: "Home Loan", href: "#services" },
@@ -82,10 +86,10 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} RealFinance. All rights reserved.
+            &copy; {new Date().getFullYear()} RealFinance. All rights reserved.
           </p>
           <p className="text-gray-600 text-xs">
-            Designed & developed with ❤️ for our customers
+            Designed & developed with for our customers
           </p>
         </div>
       </div>

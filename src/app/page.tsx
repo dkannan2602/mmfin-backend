@@ -14,10 +14,10 @@ export default function Home() {
       {/* pt-16 offsets the fixed navbar height */}
       <main className="pt-16">
         <HeroSection />
-        <AboutSection />
+        {/* <AboutSection /> */}
         <ServicesSection />
         <WhyChooseUs />
-        <HowItWorks />
+        {/* <HowItWorks /> */}
         <ContactSection />
       </main>
       <Footer />
