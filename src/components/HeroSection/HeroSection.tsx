@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 export default function HeroSection() {
   const [selectedLoan, setSelectedLoan] = useState("");
@@ -83,34 +88,29 @@ export default function HeroSection() {
               Quick Loan Check
             </h3>
             <div className="flex flex-col gap-4">
-              {/* Radix Dropdown for Loan Type */}
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger asChild>
+              {/* Shadcn Dropdown for Loan Type */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <button className="w-full bg-white/10 border border-white/30 text-white rounded-xl px-4 py-3 text-sm placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 hover:bg-white/20 transition-colors flex items-center justify-between">
                     {selectedLoan || "Select Loan Type"}
                     <ChevronDown size={16} className="ml-2" />
                   </button>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Portal>
-                  <DropdownMenu.Content
-                    className="bg-blue-950 border border-white/30 rounded-xl shadow-2xl z-50 min-w-[280px]"
-                    sideOffset={5}
-                  >
-                    {loanTypes.map((loanType) => (
-                      <DropdownMenu.Item
-                        key={loanType}
-                        onClick={() => setSelectedLoan(loanType)}
-                        className="px-4 py-3 text-sm text-white hover:bg-white/10 cursor-pointer outline-none flex items-center justify-between transition-colors"
-                      >
-                        {loanType}
-                        {selectedLoan === loanType && (
-                          <span className="text-cyan-300">✓</span>
-                        )}
-                      </DropdownMenu.Item>
-                    ))}
-                  </DropdownMenu.Content>
-                </DropdownMenu.Portal>
-              </DropdownMenu.Root>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-blue-950 border border-white/30">
+                  {loanTypes.map((loanType) => (
+                    <DropdownMenuItem
+                      key={loanType}
+                      onClick={() => setSelectedLoan(loanType)}
+                      className="text-white cursor-pointer flex items-center justify-between"
+                    >
+                      {loanType}
+                      {selectedLoan === loanType && (
+                        <span className="text-cyan-300">✓</span>
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <input
                 type="tel"
