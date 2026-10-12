@@ -71,12 +71,12 @@ export default function PosterCarousel() {
         {/* Carousel Container */}
         <div className="relative">
           {/* Embla Carousel */}
-          <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
-            <div className="flex">
+          <div className="overflow-hidden rounded-none shadow-none w-full px-4" ref={emblaRef}>
+            <div className="flex gap-4">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_calc(100%/3)] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px]"
+                  className="flex-[0_0_calc(100%/3-1rem)] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px] rounded-2xl overflow-hidden"
                 >
                   <Image
                     src={image.src}
