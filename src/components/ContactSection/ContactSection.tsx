@@ -6,9 +6,10 @@ import {
   Phone,
   Mail,
   Clock,
-  MessageCircle,
   CheckCircle2,
+  ChevronDown,
 } from "lucide-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 const loanTypes = [
   "Home Loan",
@@ -33,10 +34,14 @@ export default function ContactSection() {
 
   const handleChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleLoanTypeSelect = (loanType: string) => {
+    setForm({ ...form, loanType });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -206,21 +211,43 @@ export default function ContactSection() {
                   >
                     Loan Type <span className="text-red-500">*</span>
                   </label>
-                  <select
-                    id="loanType"
-                    name="loanType"
-                    required
-                    value={form.loanType}
-                    onChange={handleChange}
-                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700"
-                  >
-                    <option value="">Select loan type</option>
-                    {loanTypes.map((lt) => (
-                      <option key={lt} value={lt}>
-                        {lt}
-                      </option>
-                    ))}
-                  </select>
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger asChild>
+                      <button
+                        className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                        aria-label="Loan type"
+                      >
+                        {form.loanType || "Select loan type"}
+                        <ChevronDown size={16} className="ml-2" />
+                      </button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Portal>
+                      <DropdownMenu.Content
+                        className="bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[250px]"
+                        sideOffset={5}
+                      >
+                        <DropdownMenu.Item
+                          onClick={() => handleLoanTypeSelect("")}
+                          className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer outline-none"
+                        >
+                          Select loan type
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Separator className="h-px bg-gray-200" />
+                        {loanTypes.map((loanType) => (
+                          <DropdownMenu.Item
+                            key={loanType}
+                            onClick={() => handleLoanTypeSelect(loanType)}
+                            className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer outline-none flex items-center justify-between"
+                          >
+                            {loanType}
+                            {form.loanType === loanType && (
+                              <span className="text-blue-700">✓</span>
+                            )}
+                          </DropdownMenu.Item>
+                        ))}
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Portal>
+                  </DropdownMenu.Root>
                 </div>
 
                 <div className="flex flex-col gap-1.5">

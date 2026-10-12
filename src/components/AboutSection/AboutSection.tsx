@@ -7,7 +7,7 @@ export default function AboutSection() {
         <div className="flex flex-col lg:flex-row items-center gap-16">
           {/* Left Visual */}
           <div className="flex-1 relative flex justify-center">
-            <div className="w-72 h-72 sm:w-96 sm:h-96 rounded-3xl bg-gradient-to-br from-blue-700 to-cyan-400 flex items-center justify-center shadow-2xl">
+            <div className="w-72 h-72 sm:w-96 sm:h-96 rounded-3xl bg-linear-to-br from-blue-700 to-cyan-400 flex items-center justify-center shadow-2xl">
               <div className="text-center text-white px-8">
                 <div className="text-7xl mb-4">🏡</div>
                 <p className="text-2xl font-bold">10+ Years</p>
