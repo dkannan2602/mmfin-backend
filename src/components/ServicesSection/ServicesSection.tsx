@@ -1,6 +1,16 @@
+import {
+  Home,
+  User,
+  Briefcase,
+  Car,
+  Building2,
+  BookOpen,
+  ArrowRight,
+} from "lucide-react";
+
 const services = [
   {
-    icon: "🏠",
+    icon: Home,
     title: "Home Loan",
     description:
       "Buy your dream home with attractive interest rates, flexible tenure up to 30 years, and minimal documentation.",
@@ -9,7 +19,7 @@ const services = [
     badge: "Most Popular",
   },
   {
-    icon: "👤",
+    icon: User,
     title: "Personal Loan",
     description:
       "Instant personal loans for medical emergencies, travel, education, or any personal need — no collateral required.",
@@ -18,7 +28,7 @@ const services = [
     badge: null,
   },
   {
-    icon: "💼",
+    icon: Briefcase,
     title: "Business Loan",
     description:
       "Grow your business with our tailored business loan solutions. Working capital, equipment finance, and more.",
@@ -27,7 +37,7 @@ const services = [
     badge: null,
   },
   {
-    icon: "🚗",
+    icon: Car,
     title: "Vehicle Loan",
     description:
       "Finance your new car or two-wheeler with competitive rates and easy EMI options across all major brands.",
@@ -36,7 +46,7 @@ const services = [
     badge: null,
   },
   {
-    icon: "🏢",
+    icon: Building2,
     title: "Loan Against Property",
     description:
       "Unlock the value of your property. Get loans against residential or commercial properties at low interest rates.",
@@ -45,7 +55,7 @@ const services = [
     badge: null,
   },
   {
-    icon: "🎓",
+    icon: BookOpen,
     title: "Education Loan",
     description:
       "Invest in your future. We help students secure education loans for top colleges in India and abroad.",
@@ -84,7 +94,9 @@ export default function ServicesSection() {
               <div
                 className={`bg-gradient-to-br ${service.color} p-6 relative`}
               >
-                <div className="text-4xl mb-2">{service.icon}</div>
+                <div className="text-white mb-2">
+                  <service.icon size={40} />
+                </div>
                 <h3 className="text-white font-bold text-xl">{service.title}</h3>
                 {service.badge && (
                   <span className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full">
@@ -110,9 +122,10 @@ export default function ServicesSection() {
                 </div>
                 <a
                   href="#contact"
-                  className="inline-block w-full text-center bg-gray-900 text-white text-sm font-semibold py-3 rounded-xl hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center justify-center w-full gap-2 bg-gray-900 text-white text-sm font-semibold py-3 rounded-xl hover:bg-blue-700 transition-colors"
                 >
-                  Apply Now →
+                  Apply Now
+                  <ArrowRight size={16} />
                 </a>
               </div>
             </div>

@@ -1,35 +1,44 @@
+import {
+  FileText,
+  Phone,
+  Upload,
+  CheckCircle2,
+  DollarSign,
+  ArrowRight,
+} from "lucide-react";
+
 const steps = [
   {
     step: "01",
-    icon: "📝",
+    icon: FileText,
     title: "Fill the Application",
     description:
       "Complete our simple online form with your basic details and loan requirements. Takes less than 2 minutes.",
   },
   {
     step: "02",
-    icon: "📞",
+    icon: Phone,
     title: "Expert Consultation",
     description:
       "Our loan expert contacts you, reviews your profile, and recommends the best loan options available for you.",
   },
   {
     step: "03",
-    icon: "📄",
+    icon: Upload,
     title: "Document Submission",
     description:
       "Submit your documents digitally or at our office. We help you prepare and verify everything needed.",
   },
   {
     step: "04",
-    icon: "✅",
+    icon: CheckCircle2,
     title: "Loan Approval",
     description:
       "We coordinate with the bank for fast processing. Most loans get approved within 48–72 working hours.",
   },
   {
     step: "05",
-    icon: "💸",
+    icon: DollarSign,
     title: "Disbursement",
     description:
       "Once approved, the loan amount is directly disbursed to your account or the seller/vendor as required.",
@@ -60,7 +69,7 @@ export default function HowItWorks() {
           <div className="hidden lg:block absolute top-10 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 z-0" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
-            {steps.map((step, index) => (
+            {steps.map((step) => (
               <div
                 key={step.step}
                 className="flex flex-col items-center text-center"
@@ -70,7 +79,7 @@ export default function HowItWorks() {
                   <span className="text-cyan-300 text-xs font-bold">
                     {step.step}
                   </span>
-                  <span className="text-2xl leading-none">{step.icon}</span>
+                  <step.icon size={24} className="text-cyan-300 leading-none" />
                 </div>
                 <h3 className="text-gray-900 font-bold text-base mb-2">
                   {step.title}
@@ -87,9 +96,10 @@ export default function HowItWorks() {
         <div className="text-center mt-14">
           <a
             href="#contact"
-            className="bg-blue-700 text-white font-bold px-10 py-4 rounded-full text-base hover:bg-blue-800 transition-colors shadow-lg inline-block"
+            className="bg-blue-700 text-white font-bold px-10 py-4 rounded-full text-base hover:bg-blue-800 transition-colors shadow-lg inline-flex items-center gap-2"
           >
-            Start Your Application →
+            Start Your Application
+            <ArrowRight size={18} />
           </a>
         </div>
       </div>

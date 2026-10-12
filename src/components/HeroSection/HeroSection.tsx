@@ -1,3 +1,5 @@
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+
 export default function HeroSection() {
   return (
     <section
@@ -28,9 +30,10 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <a
               href="#contact"
-              className="bg-cyan-400 text-blue-900 font-bold px-8 py-4 rounded-full text-base hover:bg-cyan-300 transition-colors shadow-lg"
+              className="bg-cyan-400 text-blue-900 font-bold px-8 py-4 rounded-full text-base hover:bg-cyan-300 transition-colors shadow-lg inline-flex items-center justify-center gap-2"
             >
               Apply for a Loan
+              <ArrowRight size={18} />
             </a>
             <a
               href="#services"

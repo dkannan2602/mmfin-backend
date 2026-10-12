@@ -1,6 +1,11 @@
-"use client"
-import React from "react";
+"use client";
 
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
+} from "lucide-react";
 
 const footerLinks = {
   Services: [
@@ -44,18 +49,18 @@ export default function Footer() {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: "📘", label: "Facebook", href: "#" },
-                { icon: "📷", label: "Instagram", href: "#" },
-                { icon: "💼", label: "LinkedIn", href: "#" },
-                { icon: "🐦", label: "Twitter", href: "#" },
+                { icon: Facebook, label: "Facebook", href: "#" },
+                { icon: Instagram, label: "Instagram", href: "#" },
+                { icon: Linkedin, label: "LinkedIn", href: "#" },
+                { icon: Twitter, label: "Twitter", href: "#" },
               ].map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center text-base hover:bg-blue-700 transition-colors"
+                  className="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
                 >
-                  {social.icon}
+                  <social.icon size={18} className="text-white" />
                 </a>
               ))}
             </div>
@@ -86,10 +91,10 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} RealFinance. All rights reserved.
+            © {new Date().getFullYear()} RealFinance. All rights reserved.
           </p>
           <p className="text-gray-600 text-xs">
-            Designed & developed with for our customers
+            Designed & developed with ❤️ for our customers
           </p>
         </div>
       </div>

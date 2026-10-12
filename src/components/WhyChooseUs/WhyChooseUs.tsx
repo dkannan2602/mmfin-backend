@@ -1,36 +1,45 @@
+import {
+  Users,
+  Zap,
+  TrendingDown,
+  FileText,
+  Lightbulb,
+  Lock,
+} from "lucide-react";
+
 const reasons = [
   {
-    icon: "🤝",
+    icon: Users,
     title: "Trusted Consultants",
     description:
       "Over 10 years of experience connecting customers with the best lenders. We are a name you can rely on.",
   },
   {
-    icon: "⚡",
+    icon: Zap,
     title: "Fast Approvals",
     description:
       "Our streamlined process ensures loan approvals within 48–72 hours so you never miss an opportunity.",
   },
   {
-    icon: "💰",
+    icon: TrendingDown,
     title: "Best Interest Rates",
     description:
       "We negotiate on your behalf with 20+ bank partners to get you the most competitive rates in the market.",
   },
   {
-    icon: "📋",
+    icon: FileText,
     title: "Minimal Documentation",
     description:
       "Simplified paperwork and digital document submission. We handle the complexity so you don't have to.",
   },
   {
-    icon: "🎯",
+    icon: Lightbulb,
     title: "Personalised Guidance",
     description:
       "Every customer is unique. Our experts study your profile and recommend the best loan product for you.",
   },
   {
-    icon: "🔒",
+    icon: Lock,
     title: "100% Transparent",
     description:
       "No hidden charges. No surprises. Every step of the loan process is clearly explained to you upfront.",
@@ -62,8 +71,8 @@ export default function WhyChooseUs() {
               key={reason.title}
               className="bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 transition-colors duration-300"
             >
-              <div className="w-14 h-14 bg-cyan-400/20 rounded-2xl flex items-center justify-center text-3xl mb-5">
-                {reason.icon}
+              <div className="w-14 h-14 bg-cyan-400/20 rounded-2xl flex items-center justify-center mb-5">
+                <reason.icon size={28} className="text-cyan-400" />
               </div>
               <h3 className="text-white font-bold text-lg mb-3">
                 {reason.title}

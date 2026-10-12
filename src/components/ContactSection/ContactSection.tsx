@@ -1,6 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  MessageCircle,
+  CheckCircle2,
+} from "lucide-react";
 
 const loanTypes = [
   "Home Loan",
@@ -66,8 +74,8 @@ export default function ContactSection() {
               <h3 className="font-bold text-xl mb-6">Contact Information</h3>
               <div className="flex flex-col gap-5">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-                    📍
+                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <MapPin size={20} />
                   </div>
                   <div>
                     <p className="font-semibold text-sm">Office Address</p>
@@ -77,8 +85,8 @@ export default function ContactSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-                    📞
+                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Phone size={20} />
                   </div>
                   <div>
                     <p className="font-semibold text-sm">Phone</p>
@@ -91,8 +99,8 @@ export default function ContactSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-                    ✉️
+                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Mail size={20} />
                   </div>
                   <div>
                     <p className="font-semibold text-sm">Email</p>
@@ -105,8 +113,8 @@ export default function ContactSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-                    🕐
+                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Clock size={20} />
                   </div>
                   <div>
                     <p className="font-semibold text-sm">Business Hours</p>
@@ -127,14 +135,14 @@ export default function ContactSection() {
                 className="flex items-center justify-center gap-3 bg-green-500 text-white font-bold py-4 rounded-2xl hover:bg-green-600 transition-colors shadow-md text-base"
                 aria-label="Chat on WhatsApp"
               >
-                <span className="text-2xl">💬</span> Chat on WhatsApp
+                <MessageCircle size={20} /> Chat on WhatsApp
               </a>
               <a
                 href={`tel:${PHONE_NUMBER.replace(/\s/g, "")}`}
                 className="flex items-center justify-center gap-3 bg-blue-700 text-white font-bold py-4 rounded-2xl hover:bg-blue-800 transition-colors shadow-md text-base"
                 aria-label="Call us now"
               >
-                <span className="text-2xl">📞</span> Call Us Now
+                <Phone size={20} /> Call Us Now
               </a>
             </div>
           </div>
@@ -143,7 +151,7 @@ export default function ContactSection() {
           <div className="flex-1 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
             {submitted ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 py-12 text-center">
-                <div className="text-6xl">🎉</div>
+                <CheckCircle2 size={56} className="text-green-500" />
                 <h3 className="text-2xl font-bold text-gray-900">
                   Thank You!
                 </h3>
