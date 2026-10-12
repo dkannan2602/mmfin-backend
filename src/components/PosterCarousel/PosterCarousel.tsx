@@ -29,7 +29,11 @@ const images = [
 ];
 
 export default function PosterCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true,
+    align: "start",
+    slidesToScroll: 1
+  });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -53,7 +57,7 @@ export default function PosterCarousel() {
 
     const autoScroll = setInterval(() => {
       emblaApi.scrollNext();
-    }, 5000); // Auto-scroll every 5 seconds
+    }, 3000); // Auto-scroll every 3 seconds (slide by 1 image)
 
     return () => {
       clearInterval(autoScroll);
@@ -72,7 +76,7 @@ export default function PosterCarousel() {
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px]"
+                  className="flex-[0_0_calc(100%/3)] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px]"
                 >
                   <Image
                     src={image.src}
