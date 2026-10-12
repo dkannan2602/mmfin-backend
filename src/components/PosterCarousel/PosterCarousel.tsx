@@ -26,6 +26,11 @@ const images = [
     src: "/Image/Loan Against Property Infographic.png",
     alt: "Loan Against Property",
   },
+  // Duplicate first image for seamless loop gap
+  {
+    src: "/Image/Housing Loan Scheme Infographic.png",
+    alt: "Housing Loan Scheme",
+  },
 ];
 
 export default function PosterCarousel() {
@@ -71,8 +76,8 @@ export default function PosterCarousel() {
         {/* Carousel Container */}
         <div className="relative">
           {/* Embla Carousel */}
-          <div className="overflow-hidden rounded-none shadow-none w-full px-4" ref={emblaRef}>
-            <div className="flex gap-4">
+          <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
+            <div className="flex gap-4 px-4">
               {images.map((image, index) => (
                 <div
                   key={index}
@@ -108,12 +113,12 @@ export default function PosterCarousel() {
 
           {/* Dots Indicator */}
           <div className="flex items-center justify-center gap-2 mt-6 pb-6">
-            {images.map((_, index) => (
+            {images.slice(0, 5).map((_, index) => (
               <button
                 key={index}
                 onClick={() => emblaApi?.scrollTo(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  index === selectedIndex
+                  index === selectedIndex || (selectedIndex === 5 && index === 0)
                     ? "bg-blue-700 w-8"
                     : "bg-gray-300 w-2 hover:bg-gray-400"
                 }`}
