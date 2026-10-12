@@ -6,21 +6,23 @@ import WhyChooseUs from "@/components/WhyChooseUs/WhyChooseUs";
 import HowItWorks from "@/components/HowItWorks/HowItWorks";
 import ContactSection from "@/components/ContactSection/ContactSection";
 import Footer from "@/components/Footer/Footer";
+import WhatsAppWidget from "@/components/WhatsAppWidget/WhatsAppWidget";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      {/* pt-16 offsets the fixed navbar height */}
-      <main className="pt-16">
+      {/* pt-32 offsets the fixed navbar with top info bar */}
+      <main className="pt-32">
         <HeroSection />
-        {/* <AboutSection /> */}
+        <AboutSection />
         <ServicesSection />
         <WhyChooseUs />
-        {/* <HowItWorks /> */}
+        <HowItWorks />
         <ContactSection />
       </main>
       <Footer />
+      <WhatsAppWidget />
     </>
   );
 }

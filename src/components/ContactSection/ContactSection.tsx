@@ -128,22 +128,7 @@ export default function ContactSection() {
 
             {/* Quick Action Buttons */}
             <div className="flex flex-col gap-4">
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 bg-green-500 text-white font-bold py-4 rounded-2xl hover:bg-green-600 transition-colors shadow-md text-base"
-                aria-label="Chat on WhatsApp"
-              >
-                <MessageCircle size={20} /> Chat on WhatsApp
-              </a>
-              <a
-                href={`tel:${PHONE_NUMBER.replace(/\s/g, "")}`}
-                className="flex items-center justify-center gap-3 bg-blue-700 text-white font-bold py-4 rounded-2xl hover:bg-blue-800 transition-colors shadow-md text-base"
-                aria-label="Call us now"
-              >
-                <Phone size={20} /> Call Us Now
-              </a>
+              {/* Buttons removed - now floating widget at bottom-right */}
             </div>
           </div>
 
