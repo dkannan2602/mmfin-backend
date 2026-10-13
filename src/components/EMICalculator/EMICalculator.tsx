@@ -1,13 +1,20 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import {
   Home,
   User,
   Briefcase,
   Car,
   Building2,
+  ChevronDown,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface LoanType {
   id: string;
@@ -17,7 +24,9 @@ interface LoanType {
   maxAmount: number;
   minTenure: number;
   maxTenure: number;
-  baseRate: number;
+  minRate: number;
+  maxRate: number;
+  defaultRate: number;
 }
 
 const loanTypes: LoanType[] = [
@@ -29,7 +38,9 @@ const loanTypes: LoanType[] = [
     maxAmount: 50000000,
     minTenure: 1,
     maxTenure: 30,
-    baseRate: 8.5,
+    minRate: 7.5,
+    maxRate: 10.5,
+    defaultRate: 8.5,
   },
   {
     id: "personal",
@@ -39,7 +50,9 @@ const loanTypes: LoanType[] = [
     maxAmount: 5000000,
     minTenure: 1,
     maxTenure: 7,
-    baseRate: 10.99,
+    minRate: 9.99,
+    maxRate: 14.99,
+    defaultRate: 10.99,
   },
   {
     id: "business",
@@ -49,7 +62,9 @@ const loanTypes: LoanType[] = [
     maxAmount: 20000000,
     minTenure: 1,
     maxTenure: 10,
-    baseRate: 9.99,
+    minRate: 8.99,
+    maxRate: 12.99,
+    defaultRate: 9.99,
   },
   {
     id: "vehicle",
@@ -59,7 +74,9 @@ const loanTypes: LoanType[] = [
     maxAmount: 2500000,
     minTenure: 1,
     maxTenure: 8,
-    baseRate: 8.99,
+    minRate: 7.99,
+    maxRate: 10.99,
+    defaultRate: 8.99,
   },
   {
     id: "property",
@@ -69,85 +86,49 @@ const loanTypes: LoanType[] = [
     maxAmount: 10000000,
     minTenure: 1,
     maxTenure: 15,
-    baseRate: 8.49,
+    minRate: 7.49,
+    maxRate: 9.99,
+    defaultRate: 8.49,
   },
 ];
-
-// Function to calculate dynamic interest rate based on loan amount and tenure
-const calculateDynamicRate = (
-  baseRate: number,
-  loanAmount: number,
-  maxAmount: number,
-  tenure: number,
-  maxTenure: number
-): number => {
-  let adjustedRate = baseRate;
-
-  // Adjustment based on loan amount (lower amount = higher rate)
-  const amountPercentage = loanAmount / maxAmount;
-  if (amountPercentage < 0.3) {
-    adjustedRate += 0.5; // +0.5% for smaller loans
-  } else if (amountPercentage < 0.6) {
-    adjustedRate += 0.25; // +0.25% for medium loans
-  }
-  // else no additional adjustment for larger loans
-
-  // Adjustment based on tenure (longer tenure = higher rate)
-  const tenurePercentage = tenure / maxTenure;
-  if (tenurePercentage > 0.75) {
-    adjustedRate += 0.3; // +0.3% for longer tenure
-  } else if (tenurePercentage > 0.5) {
-    adjustedRate += 0.15; // +0.15% for medium tenure
-  }
-  // else no additional adjustment for shorter tenure
-
-  return Math.round(adjustedRate * 100) / 100; // Round to 2 decimals
-};
 
 const calculateEMI = (principal: number, rate: number, tenure: number) => {
   const monthlyRate = rate / 12 / 100;
   const months = tenure * 12;
-
+  
   if (monthlyRate === 0) {
     return Math.round(principal / months);
   }
-
+  
   const emi =
     (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
     (Math.pow(1 + monthlyRate, months) - 1);
-
+  
   return Math.round(emi);
 };
 
 export default function EMICalculator() {
-  const [selectedLoanId, setSelectedLoanId] = useState<string>("home");
+  const [selectedLoan, setSelectedLoan] = useState<LoanType>(loanTypes[0]);
   const [loanAmount, setLoanAmount] = useState(1500000);
   const [tenure, setTenure] = useState(5);
-
-  const selectedLoan = loanTypes.find((l) => l.id === selectedLoanId)!;
-
-  // Calculate dynamic interest rate based on amount, tenure, and loan type
-  const interestRate = useMemo(() => {
-    return calculateDynamicRate(
-      selectedLoan.baseRate,
-      loanAmount,
-      selectedLoan.maxAmount,
-      tenure,
-      selectedLoan.maxTenure
-    );
-  }, [selectedLoan, loanAmount, tenure]);
+  const [interestRate, setInterestRate] = useState(selectedLoan.defaultRate);
 
   const emi = calculateEMI(loanAmount, interestRate, tenure);
   const totalPayable = emi * tenure * 12;
   const interestAmount = totalPayable - loanAmount;
 
   const handleLoanChange = useCallback((loanId: string) => {
-    setSelectedLoanId(loanId);
     const loan = loanTypes.find((l) => l.id === loanId);
     if (loan) {
+      setSelectedLoan(loan);
       // Reset sliders to middle values within new loan's range
-      setLoanAmount(Math.round((loan.minAmount + loan.maxAmount) / 2));
-      setTenure(Math.round((loan.minTenure + loan.maxTenure) / 2));
+      setLoanAmount(
+        Math.round((loan.minAmount + loan.maxAmount) / 2)
+      );
+      setTenure(
+        Math.round((loan.minTenure + loan.maxTenure) / 2)
+      );
+      setInterestRate(loan.defaultRate);
     }
   }, []);
 
@@ -174,45 +155,43 @@ export default function EMICalculator() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left: Input Section */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-            {/* Loan Type Radio Buttons */}
-            <div className="mb-8">
-              <label className="block text-sm font-semibold text-gray-900 mb-4">
-                Select Loan Type
-              </label>
-              <div className="space-y-3">
+          {/* Loan Type Selector - Form Field */}
+          <div className="mb-8">
+            <label className="block text-sm font-semibold text-gray-900 mb-3">
+              Select Loan Type <span className="text-red-500">*</span>
+            </label>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 font-medium flex items-center justify-between hover:border-blue-400 transition-colors focus:outline-none focus:border-blue-600"
+                  style={{
+                    width: "var(--radix-dropdown-menu-trigger-width)",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <CurrentIcon size={20} className="text-blue-700" />
+                    <span>{selectedLoan.name}</span>
+                  </div>
+                  <ChevronDown size={18} className="text-gray-600" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
                 {loanTypes.map((loan) => {
                   const LoanIcon = loan.icon;
                   return (
-                    <label
+                    <DropdownMenuItem
                       key={loan.id}
-                      className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-400 transition-colors"
-                      style={{
-                        borderColor:
-                          selectedLoanId === loan.id ? "#2563eb" : undefined,
-                        backgroundColor:
-                          selectedLoanId === loan.id ? "#eff6ff" : undefined,
-                      }}
+                      onClick={() => handleLoanChange(loan.id)}
+                      className="flex items-center gap-3 cursor-pointer px-3 py-2"
                     >
-                      <input
-                        type="radio"
-                        name="loan-type"
-                        value={loan.id}
-                        checked={selectedLoanId === loan.id}
-                        onChange={() => handleLoanChange(loan.id)}
-                        className="w-4 h-4 text-blue-700 cursor-pointer accent-blue-700"
-                      />
-                      <LoanIcon
-                        size={20}
-                        className="text-blue-700 ml-3 mr-2 flex-shrink-0"
-                      />
-                      <span className="text-gray-900 font-medium flex-1">
-                        {loan.name}
-                      </span>
-                    </label>
+                      <LoanIcon size={18} className="text-blue-700" />
+                      <span>{loan.name}</span>
+                    </DropdownMenuItem>
                   );
                 })}
-              </div>
-            </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
             {/* Loan Amount Slider */}
             <div className="mb-8">
@@ -266,19 +245,29 @@ export default function EMICalculator() {
               </div>
             </div>
 
-            {/* Interest Rate Display (Dynamic) */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-semibold text-gray-700">
-                  Interest Rate (Adjusted)
-                </span>
+            {/* Interest Rate Slider */}
+            <div className="mb-8">
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-semibold text-gray-900">
+                  Interest Rate
+                </label>
                 <span className="text-lg font-bold text-blue-700">
-                  {interestRate}% p.a.
+                  {interestRate.toFixed(2)}% p.a.
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
-                Based on {selectedLoan.name} (Base: {selectedLoan.baseRate}%)
-              </p>
+              <input
+                type="range"
+                min={selectedLoan.minRate}
+                max={selectedLoan.maxRate}
+                value={interestRate}
+                step={0.01}
+                onChange={(e) => setInterestRate(Number(e.target.value))}
+                className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-700"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-2">
+                <span>{selectedLoan.minRate.toFixed(2)}%</span>
+                <span>{selectedLoan.maxRate.toFixed(2)}%</span>
+              </div>
             </div>
           </div>
 
