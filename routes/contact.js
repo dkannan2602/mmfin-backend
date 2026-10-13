@@ -106,21 +106,26 @@ router.get('/:id', protect, async (req, res) => {
   }
 });
 
-// Update contact status (admin only - protected)
+// Update contact status and notes (admin only - protected)
 router.patch('/:id', protect, async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, notes } = req.body;
 
-    if (!['new', 'contacted', 'resolved'].includes(status)) {
+    if (status && !['new', 'contacted', 'resolved'].includes(status)) {
       return res.status(400).json({
         success: false,
         message: 'Invalid status'
       });
     }
 
+    const updateData = {};
+    if (status) updateData.status = status;
+    if (notes !== undefined) updateData.notes = notes;
+    updateData.updatedAt = new Date();
+
     const contact = await Contact.findByIdAndUpdate(
       req.params.id,
-      { status },
+      updateData,
       { new: true }
     );
 
@@ -133,7 +138,7 @@ router.patch('/:id', protect, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Contact status updated',
+      message: 'Contact updated successfully',
       contact
     });
   } catch (error) {

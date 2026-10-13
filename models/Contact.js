@@ -33,12 +33,20 @@ const contactSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  notes: {
+    type: String,
+    default: ''
+  },
   status: {
     type: String,
     enum: ['new', 'contacted', 'resolved'],
     default: 'new'
   },
   createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
     type: Date,
     default: Date.now
   }
