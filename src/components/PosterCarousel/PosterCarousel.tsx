@@ -29,11 +29,7 @@ const images = [
 ];
 
 export default function PosterCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    loop: true,
-    align: "center",
-    slidesToScroll: 1
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onSelect = useCallback(() => {
@@ -57,7 +53,7 @@ export default function PosterCarousel() {
 
     const autoScroll = setInterval(() => {
       emblaApi.scrollNext();
-    }, 3000); // Auto-scroll every 3 seconds
+    }, 5000); // Auto-scroll every 5 seconds
 
     return () => {
       clearInterval(autoScroll);
@@ -66,21 +62,17 @@ export default function PosterCarousel() {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="py-8 bg-white">
+    <section className="py-0 bg-white">
       <div className="w-full">
         {/* Carousel Container */}
         <div className="relative">
           {/* Embla Carousel */}
           <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
-            <div className="flex gap-6 px-4">
+            <div className="flex">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className={`flex-[0_0_calc(100%/1)] sm:flex-[0_0_calc(100%/2)] lg:flex-[0_0_calc(100%/3)] min-w-0 relative h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl overflow-hidden transition-all duration-300 ${
-                    index === selectedIndex
-                      ? "scale-100 opacity-100"
-                      : "scale-95 opacity-70"
-                  }`}
+                  className="flex-[0_0_100%] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px]"
                 >
                   <Image
                     src={image.src}
