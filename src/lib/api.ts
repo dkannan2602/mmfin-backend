@@ -49,8 +49,8 @@ export const contactAPI = {
   getAll: (status?: string) =>
     api.get('/contact', { params: { status } }),
   getOne: (id: string) => api.get(`/contact/${id}`),
-  updateStatus: (id: string, status: string) =>
-    api.patch(`/contact/${id}`, { status }),
+  updateStatus: (id: string, status: string, notes?: string) =>
+    api.patch(`/contact/${id}`, { status, notes }),
   delete: (id: string) => api.delete(`/contact/${id}`),
 };
 
