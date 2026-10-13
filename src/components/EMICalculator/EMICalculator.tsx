@@ -152,42 +152,42 @@ export default function EMICalculator() {
         </div>
 
         {/* Calculator Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left: Input Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8 relative">
-          {/* Loan Type Selector - Form Field */}
-          <div className="mb-8 relative z-40">
-            <label className="block text-sm font-semibold text-gray-900 mb-3">
-              Select Loan Type <span className="text-red-500">*</span>
-            </label>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-left text-gray-900 font-medium flex items-center justify-between hover:border-blue-400 active:border-blue-600 transition-colors focus:outline-none focus:border-blue-600"
-                >
-                  <div className="flex items-center gap-3">
-                    <CurrentIcon size={20} className="text-blue-700" />
-                    <span>{selectedLoan.name}</span>
-                  </div>
-                  <ChevronDown size={18} className="text-gray-600" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-64">
-                {loanTypes.map((loan) => {
-                  const LoanIcon = loan.icon;
-                  return (
-                    <DropdownMenuItem
-                      key={loan.id}
-                      onClick={() => handleLoanChange(loan.id)}
-                    >
-                      <LoanIcon size={18} className="text-blue-700 flex-shrink-0" />
-                      <span>{loan.name}</span>
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <div className="bg-white rounded-2xl shadow-lg p-8">
+            {/* Loan Type Selector - Form Field */}
+            <div className="mb-8 relative z-40">
+              <label className="block text-sm font-semibold text-gray-900 mb-3">
+                Select Loan Type <span className="text-red-500">*</span>
+              </label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-left text-gray-900 font-medium flex items-center justify-between hover:border-blue-400 active:border-blue-600 transition-colors focus:outline-none focus:border-blue-600"
+                  >
+                    <div className="flex items-center gap-3">
+                      <CurrentIcon size={20} className="text-blue-700" />
+                      <span>{selectedLoan.name}</span>
+                    </div>
+                    <ChevronDown size={18} className="text-gray-600" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
+                  {loanTypes.map((loan) => {
+                    const LoanIcon = loan.icon;
+                    return (
+                      <DropdownMenuItem
+                        key={loan.id}
+                        onClick={() => handleLoanChange(loan.id)}
+                      >
+                        <LoanIcon size={18} className="text-blue-700 flex-shrink-0" />
+                        <span>{loan.name}</span>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
             {/* Loan Amount Slider */}
             <div className="mb-8">
@@ -268,9 +268,9 @@ export default function EMICalculator() {
           </div>
 
           {/* Right: Result Section */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-lg p-8 text-white">
+          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-lg p-8 text-white flex flex-col justify-center items-center">
             {/* Monthly EMI */}
-            <div className="mb-8">
+            <div className="mb-8 w-full text-center">
               <p className="text-sm font-medium text-blue-100 mb-2">
                 Your Monthly EMI will be
               </p>
@@ -283,7 +283,7 @@ export default function EMICalculator() {
             </div>
 
             {/* Breakdown */}
-            <div className="space-y-4 pt-6 border-t border-blue-400">
+            <div className="space-y-4 pt-6 w-full border-t border-blue-400">
               <div className="flex justify-between items-center">
                 <span className="text-blue-100 font-medium">Amount Payable</span>
                 <span className="text-lg font-bold">
