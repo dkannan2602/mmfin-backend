@@ -152,21 +152,18 @@ export default function EMICalculator() {
         </div>
 
         {/* Calculator Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-0">
           {/* Left: Input Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="bg-white rounded-2xl shadow-lg p-8 relative">
           {/* Loan Type Selector - Form Field */}
-          <div className="mb-8">
+          <div className="mb-8 relative z-40">
             <label className="block text-sm font-semibold text-gray-900 mb-3">
               Select Loan Type <span className="text-red-500">*</span>
             </label>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-gray-900 font-medium flex items-center justify-between hover:border-blue-400 transition-colors focus:outline-none focus:border-blue-600"
-                  style={{
-                    width: "var(--radix-dropdown-menu-trigger-width)",
-                  }}
+                  className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-left text-gray-900 font-medium flex items-center justify-between hover:border-blue-400 active:border-blue-600 transition-colors focus:outline-none focus:border-blue-600"
                 >
                   <div className="flex items-center gap-3">
                     <CurrentIcon size={20} className="text-blue-700" />
@@ -175,16 +172,15 @@ export default function EMICalculator() {
                   <ChevronDown size={18} className="text-gray-600" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+              <DropdownMenuContent align="start" className="w-64">
                 {loanTypes.map((loan) => {
                   const LoanIcon = loan.icon;
                   return (
                     <DropdownMenuItem
                       key={loan.id}
                       onClick={() => handleLoanChange(loan.id)}
-                      className="flex items-center gap-3 cursor-pointer px-3 py-2"
                     >
-                      <LoanIcon size={18} className="text-blue-700" />
+                      <LoanIcon size={18} className="text-blue-700 flex-shrink-0" />
                       <span>{loan.name}</span>
                     </DropdownMenuItem>
                   );
