@@ -38,4 +38,20 @@ export const authAPI = {
   getMe: () => api.get('/auth/me'),
 };
 
+export const contactAPI = {
+  submit: (data: {
+    name: string;
+    email?: string;
+    mobile: string;
+    loanType: string;
+    message?: string;
+  }) => api.post('/contact/submit', data),
+  getAll: (status?: string) =>
+    api.get('/contact', { params: { status } }),
+  getOne: (id: string) => api.get(`/contact/${id}`),
+  updateStatus: (id: string, status: string) =>
+    api.patch(`/contact/${id}`, { status }),
+  delete: (id: string) => api.delete(`/contact/${id}`),
+};
+
 export default api;

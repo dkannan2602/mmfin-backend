@@ -8,6 +8,8 @@ import {
   Clock,
   CheckCircle2,
   ChevronDown,
+  AlertCircle,
+  XCircle,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -16,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { contactAPI } from "@/lib/api";
 
 const loanTypes = [
   "Home Loan",
@@ -29,14 +32,33 @@ const loanTypes = [
 const WHATSAPP_NUMBER = "919876543210"; // Replace with actual number
 const PHONE_NUMBER = "+91 98765 43210"; // Replace with actual number
 
+interface FormState {
+  name: string;
+  email: string;
+  mobile: string;
+  loanType: string;
+  message: string;
+}
+
+interface MessageState {
+  type: 'success' | 'error' | null;
+  message: string;
+}
+
 export default function ContactSection() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     name: "",
+    email: "",
     mobile: "",
     loanType: "",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [messageState, setMessageState] = useState<MessageState>({
+    type: null,
+    message: ""
+  });
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -50,10 +72,47 @@ export default function ContactSection() {
     setForm({ ...form, loanType });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: wire up to backend API
-    setSubmitted(true);
+    setLoading(true);
+    setMessageState({ type: null, message: "" });
+
+    try {
+      const response = await contactAPI.submit({
+        name: form.name,
+        email: form.email,
+        mobile: form.mobile,
+        loanType: form.loanType,
+        message: form.message,
+      });
+
+      if (response.data.success) {
+        setMessageState({
+          type: 'success',
+          message: response.data.message
+        });
+        setSubmitted(true);
+        // Reset form after 2 seconds
+        setTimeout(() => {
+          setForm({
+            name: "",
+            email: "",
+            mobile: "",
+            loanType: "",
+            message: "",
+          });
+          setSubmitted(false);
+          setMessageState({ type: null, message: "" });
+        }, 3000);
+      }
+    } catch (error: any) {
+      setMessageState({
+        type: 'error',
+        message: error.response?.data?.message || 'Failed to submit enquiry. Please try again.'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const whatsappMessage = encodeURIComponent(
@@ -145,6 +204,27 @@ export default function ContactSection() {
 
           {/* Right — Form */}
           <div className="flex-1 bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+            {/* Success/Error Messages */}
+            {messageState.type && (
+              <div className={`mb-6 flex items-start gap-3 p-4 rounded-lg border-2 ${
+                messageState.type === 'success'
+                  ? 'bg-green-50 border-green-200 text-green-700'
+                  : 'bg-red-50 border-red-200 text-red-700'
+              }`}>
+                {messageState.type === 'success' ? (
+                  <CheckCircle2 size={20} className="flex-shrink-0 mt-0.5" />
+                ) : (
+                  <XCircle size={20} className="flex-shrink-0 mt-0.5" />
+                )}
+                <div>
+                  <p className="font-semibold text-sm">
+                    {messageState.type === 'success' ? 'Success!' : 'Error!'}
+                  </p>
+                  <p className="text-sm mt-1">{messageState.message}</p>
+                </div>
+              </div>
+            )}
+
             {submitted ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 py-12 text-center">
                 <CheckCircle2 size={56} className="text-green-500" />
@@ -157,8 +237,15 @@ export default function ContactSection() {
                 </p>
                 <button
                   onClick={() => {
-                    setForm({ name: "", mobile: "", loanType: "", message: "" });
+                    setForm({
+                      name: "",
+                      email: "",
+                      mobile: "",
+                      loanType: "",
+                      message: "",
+                    });
                     setSubmitted(false);
+                    setMessageState({ type: null, message: "" });
                   }}
                   className="mt-4 bg-blue-700 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-800 transition-colors"
                 >
@@ -183,10 +270,30 @@ export default function ContactSection() {
                     name="name"
                     type="text"
                     required
+                    disabled={loading}
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Enter your full name"
-                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="email"
+                    className="text-gray-700 text-sm font-medium"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    disabled={loading}
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -202,11 +309,12 @@ export default function ContactSection() {
                     name="mobile"
                     type="tel"
                     required
+                    disabled={loading}
                     value={form.mobile}
                     onChange={handleChange}
                     placeholder="+91 XXXXX XXXXX"
                     pattern="[0-9+\s]{10,15}"
-                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -220,7 +328,8 @@ export default function ContactSection() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
-                        className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 flex items-center justify-between hover:bg-gray-50 transition-colors w-full"
+                        disabled={loading}
+                        className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 flex items-center justify-between hover:bg-gray-50 transition-colors w-full disabled:bg-gray-100 disabled:cursor-not-allowed"
                         aria-label="Loan type"
                       >
                         {form.loanType || "Select loan type"}
@@ -262,18 +371,27 @@ export default function ContactSection() {
                     id="message"
                     name="message"
                     rows={4}
+                    disabled={loading}
                     value={form.message}
                     onChange={handleChange}
                     placeholder="Tell us about your requirements…"
-                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-800 transition-colors mt-1 text-base"
+                  disabled={loading}
+                  className="bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-800 transition-colors mt-1 text-base disabled:bg-blue-500 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Submit Enquiry →
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>Submit Enquiry →</>
+                  )}
                 </button>
 
                 <p className="text-gray-400 text-xs text-center">
