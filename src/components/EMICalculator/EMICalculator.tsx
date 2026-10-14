@@ -166,10 +166,14 @@ export default function EMICalculator() {
                     className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg text-left text-gray-900 font-medium flex items-center justify-between hover:border-blue-400 active:border-blue-600 transition-colors focus:outline-none focus:border-blue-600"
                   >
                     <div className="flex items-center gap-3">
-                      <CurrentIcon size={20} className="text-blue-700" />
+                      <div className="text-blue-700">
+                        <CurrentIcon size={20} />
+                      </div>
                       <span>{selectedLoan.name}</span>
                     </div>
-                    <ChevronDown size={18} className="text-gray-600" />
+                    <div className="text-gray-600">
+                      <ChevronDown size={18} />
+                    </div>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
@@ -180,7 +184,9 @@ export default function EMICalculator() {
                         key={loan.id}
                         onClick={() => handleLoanChange(loan.id)}
                       >
-                        <LoanIcon size={18} className="text-blue-700 flex-shrink-0" />
+                      <div className="text-blue-700 flex-shrink-0">
+                        <LoanIcon size={18} />
+                      </div>
                         <span>{loan.name}</span>
                       </DropdownMenuItem>
                     );

@@ -11,6 +11,7 @@ import {
   LogOut,
   Menu,
   X,
+  Zap,
 } from 'lucide-react';
 
 const sidebarMenus = [
@@ -19,6 +20,12 @@ const sidebarMenus = [
     label: 'General',
     icon: LayoutDashboard,
     href: '/admin/dashboard/general',
+  },
+  {
+    id: 'quick',
+    label: 'Quick',
+    icon: Zap,
+    href: '/admin/dashboard/quick',
   },
   {
     id: 'contact',
@@ -34,6 +41,9 @@ const sidebarMenus = [
   },
 ];
 
+const SESSION_TIMEOUT = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes inactivity
+
 export default function DashboardLayout({
   children,
 }: {
@@ -43,8 +53,13 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [adminName, setAdminName] = useState('');
   const [adminEmail, setAdminEmail] = useState('');
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [showSessionModal, setShowSessionModal] = useState(false);
+  const [sessionMessage, setSessionMessage] = useState('');
 
   useEffect(() => {
+    setIsHydrated(true);
+    
     // Check if user is authenticated
     const token = Cookies.get('authToken');
     if (!token) {
@@ -63,13 +78,94 @@ export default function DashboardLayout({
         console.error('Error parsing admin info:', error);
       }
     }
+
+    // Check session start time
+    const loginTime = localStorage.getItem('loginTime');
+    if (!loginTime) {
+      // Set login time if not exists
+      localStorage.setItem('loginTime', Date.now().toString());
+    } else {
+      // Check if 8 hours have passed
+      const currentTime = Date.now();
+      const elapsedTime = currentTime - parseInt(loginTime);
+      
+      if (elapsedTime >= SESSION_TIMEOUT) {
+        // Session expired
+        handleSessionExpired();
+        return;
+      }
+    }
+
+    // Setup auto-logout after 8 hours
+    const sessionTimer = setTimeout(() => {
+      handleSessionExpired();
+    }, SESSION_TIMEOUT);
+
+    // Setup inactivity timer (30 minutes)
+    let inactivityTimer = setTimeout(() => {
+      setSessionMessage('Your session will expire due to inactivity in 2 minutes. Click to continue.');
+      setShowSessionModal(true);
+    }, INACTIVITY_TIMEOUT);
+
+    // Reset inactivity timer on user activity
+    const handleUserActivity = () => {
+      clearTimeout(inactivityTimer);
+      setShowSessionModal(false);
+      
+      inactivityTimer = setTimeout(() => {
+        setSessionMessage('Your session will expire due to inactivity in 2 minutes. Click to continue.');
+        setShowSessionModal(true);
+      }, INACTIVITY_TIMEOUT);
+    };
+
+    // Listen for user activity
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart', 'click'];
+    events.forEach(event => {
+      document.addEventListener(event, handleUserActivity);
+    });
+
+    return () => {
+      clearTimeout(sessionTimer);
+      clearTimeout(inactivityTimer);
+      events.forEach(event => {
+        document.removeEventListener(event, handleUserActivity);
+      });
+    };
   }, [router]);
+
+  const handleSessionExpired = () => {
+    Cookies.remove('authToken');
+    Cookies.remove('adminInfo');
+    localStorage.removeItem('loginTime');
+    setShowSessionModal(false);
+    router.push('/admin/login');
+  };
+
+  const handleContinueSession = () => {
+    setShowSessionModal(false);
+    // Reset the login time to extend the session
+    localStorage.setItem('loginTime', Date.now().toString());
+  };
 
   const handleLogout = () => {
     Cookies.remove('authToken');
     Cookies.remove('adminInfo');
+    localStorage.removeItem('loginTime');
     router.push('/admin/login');
   };
+
+  // Prevent hydration mismatch by only rendering after client hydration
+  if (!isHydrated) {
+    return (
+      <div className="flex h-screen bg-gray-100">
+        <div className="w-64 bg-gradient-to-b from-gray-900 to-gray-800" />
+        <div className="flex-1 ml-64">
+          <div className="h-20 bg-white border-b border-gray-200" />
+          <div className="p-8" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -140,6 +236,39 @@ export default function DashboardLayout({
           {children}
         </div>
       </div>
+
+      {/* Session Modal */}
+      {showSessionModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Session Timeout</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              {sessionMessage}
+            </p>
+            
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <p className="text-yellow-700 text-sm font-medium text-center">
+                Your session will expire in 2 minutes
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleSessionExpired}
+                className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Logout Now
+              </button>
+              <button
+                onClick={handleContinueSession}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

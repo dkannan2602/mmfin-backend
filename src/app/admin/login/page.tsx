@@ -7,8 +7,8 @@ import { authAPI } from '@/lib/api';
 import { Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState('dkadmin@gmail.com');
-  const [password, setPassword] = useState('admin@123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -127,12 +127,7 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          {/* Footer */}
-          <div className="bg-gray-50 px-8 py-4 border-t border-gray-200 text-center text-xs text-gray-600">
-            <p>Demo Credentials</p>
-            <p className="mt-1">Email: dkadmin@gmail.com</p>
-            <p>Password: admin@123</p>
-          </div>
+
         </div>
       </div>
     </div>

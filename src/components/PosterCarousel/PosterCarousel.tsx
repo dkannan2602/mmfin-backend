@@ -1,121 +1,148 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const images = [
+const posters = [
   {
-    src: "/Image/Housing Loan Scheme Infographic.png",
-    alt: "Housing Loan Scheme",
+    src: "/Image/posters/homeloan.png",
+    alt: "Home Loan",
   },
   {
-    src: "/Image/Personal Loan Scheme Poster.png",
-    alt: "Personal Loan Scheme",
+    src: "/Image/posters/personalloan.png",
+    alt: "Personal Loan",
   },
   {
-    src: "/Image/Business Loan Scheme Poster.png",
-    alt: "Business Loan Scheme",
+    src: "/Image/posters/businessloan.png",
+    alt: "Business Loan",
   },
   {
-    src: "/Image/Vehicle Loan Scheme Infographic.png",
-    alt: "Vehicle Loan Scheme",
+    src: "/Image/posters/vehicleloan.png",
+    alt: "Vehicle Loan",
   },
   {
-    src: "/Image/Loan Against Property Infographic.png",
-    alt: "Loan Against Property",
+    src: "/Image/posters/propertyloan.png",
+    alt: "Property Loan",
   },
 ];
 
 export default function PosterCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  // Auto-scroll effect
   useEffect(() => {
-    if (!emblaApi) return;
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => (prev + 1) % posters.length);
+    }, 5000);
 
-    emblaApi.on("select", onSelect);
-
-    const autoScroll = setInterval(() => {
-      emblaApi.scrollNext();
-    }, 5000); // Auto-scroll every 5 seconds
-
-    return () => {
-      clearInterval(autoScroll);
-      emblaApi.off("select", onSelect);
-    };
-  }, [emblaApi, onSelect]);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="py-0 bg-white">
-      <div className="w-full">
-        {/* Carousel Container */}
-        <div className="relative">
-          {/* Embla Carousel */}
-          <div className="overflow-hidden rounded-none shadow-none w-full" ref={emblaRef}>
-            <div className="flex">
-              {images.map((image, index) => (
+    <section className="w-full bg-white py-16 md:py-20 lg:py-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3">
+            Our <span className="text-blue-600">Financial Products</span>
+          </h2>
+          <p className="text-gray-600 text-base md:text-lg">
+            Explore our range of loan solutions tailored for you
+          </p>
+        </div>
+
+        {/* Slider Container */}
+        <div className="relative w-full overflow-hidden rounded-2xl shadow-2xl bg-gray-50">
+          {/* Slides Wrapper */}
+          <div className="relative h-96 sm:h-[420px] md:h-[500px] lg:h-[600px]">
+            {posters.map((poster, index) => {
+              let position = "translate-x-full opacity-0";
+              let delay = 0;
+
+              if (index === currentIndex) {
+                position = "translate-x-0 opacity-100";
+                delay = 0;
+              } else if (
+                index === (currentIndex - 1 + posters.length) % posters.length
+              ) {
+                position = "-translate-x-full opacity-0";
+                delay = 0;
+              }
+
+              return (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 relative h-[400px] sm:h-[500px] md:h-[600px]"
+                  className={`absolute inset-0 transition-all duration-700 ease-in-out ${position} ${
+                    isTransitioning ? "" : ""
+                  }`}
                 >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-contain"
-                    priority={index === 0}
-                  />
+                  <div className="relative w-full h-full bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-8 sm:p-10 md:p-12 lg:p-16">
+                    <Image
+                      src={poster.src}
+                      alt={poster.alt}
+                      fill
+                      className="object-contain p-0"
+                      quality={95}
+                      priority={index === currentIndex}
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
 
-          {/* Navigation Buttons */}
-          <button
-            onClick={scrollPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-900 rounded-full p-2 sm:p-3 transition-colors shadow-lg"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <button
-            onClick={scrollNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-900 rounded-full p-2 sm:p-3 transition-colors shadow-lg"
-            aria-label="Next slide"
-          >
-            <ChevronRight size={24} />
-          </button>
-
-          {/* Dots Indicator */}
-          <div className="flex items-center justify-center gap-2 mt-6 pb-6">
-            {images.map((_, index) => (
+          {/* Side Indicators - Vertical */}
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+            {posters.map((_, index) => (
               <button
                 key={index}
-                onClick={() => emblaApi?.scrollTo(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === selectedIndex
-                    ? "bg-blue-700 w-8"
-                    : "bg-gray-300 w-2 hover:bg-gray-400"
+                onClick={() => {
+                  setIsTransitioning(true);
+                  setCurrentIndex(index);
+                }}
+                className={`transition-all duration-300 rounded-full ${
+                  index === currentIndex
+                    ? "bg-blue-600 h-3 w-10"
+                    : "bg-gray-400 h-2 w-2 hover:bg-gray-600"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
+          </div>
+
+          {/* Side Indicators - Vertical (Right) */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+            {posters.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setIsTransitioning(true);
+                  setCurrentIndex(index);
+                }}
+                className={`transition-all duration-300 rounded-full ${
+                  index === currentIndex
+                    ? "bg-blue-600 h-3 w-10"
+                    : "bg-gray-400 h-2 w-2 hover:bg-gray-600"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Bottom Info */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full">
+            <span className="text-white text-sm font-medium">
+              {currentIndex + 1} <span className="text-gray-300">/ {posters.length}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Slide Counter Below */}
+        <div className="text-center mt-8">
+          <div className="inline-flex items-center gap-2">
+            <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+            <p className="text-gray-600 text-sm">Slides auto-rotate every 5 seconds</p>
           </div>
         </div>
       </div>

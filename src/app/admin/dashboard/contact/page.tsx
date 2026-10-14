@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Mail, Trash2, X, RefreshCw } from 'lucide-react';
+import { Mail, Trash2, X, RefreshCw, AlertTriangle } from 'lucide-react';
 import { contactAPI } from '@/lib/api';
 
 interface Contact {
@@ -20,6 +20,7 @@ export default function ContactDashboard() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isHydrated, setIsHydrated] = useState(false);
   const [notesModal, setNotesModal] = useState<{
     visible: boolean;
     contactId: string | null;
@@ -29,8 +30,17 @@ export default function ContactDashboard() {
     contactId: null,
     notes: ''
   });
+  
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    visible: boolean;
+    contactId: string | null;
+  }>({
+    visible: false,
+    contactId: null
+  });
 
   useEffect(() => {
+    setIsHydrated(true);
     fetchContacts();
   }, []);
 
@@ -98,23 +108,23 @@ export default function ContactDashboard() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this contact?')) return;
-
     try {
       const response = await contactAPI.delete(id);
       if (response.data.success) {
         setContacts(contacts.filter(c => c._id !== id));
+        setDeleteConfirm({ visible: false, contactId: null });
       }
     } catch (err) {
       console.error('Failed to delete contact:', err);
+      setDeleteConfirm({ visible: false, contactId: null });
     }
   };
 
   const stats = {
-    total: contacts.length,
-    new: contacts.filter(c => c.status === 'new').length,
-    contacted: contacts.filter(c => c.status === 'contacted').length,
-    resolved: contacts.filter(c => c.status === 'resolved').length,
+    total: contacts?.length || 0,
+    new: contacts?.filter(c => c.status === 'new').length || 0,
+    contacted: contacts?.filter(c => c.status === 'contacted').length || 0,
+    resolved: contacts?.filter(c => c.status === 'resolved').length || 0,
   };
 
   const getStatusBadge = (status: string) => {
@@ -125,6 +135,17 @@ export default function ContactDashboard() {
     };
     return badgeConfig[status as keyof typeof badgeConfig] || '';
   };
+
+  if (!isHydrated) {
+    return (
+      <div className="space-y-8">
+        <div className="p-8 text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent" />
+          <p className="text-gray-600 mt-2">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -178,7 +199,7 @@ export default function ContactDashboard() {
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mb-2" />
             <p className="text-gray-600">Loading contacts...</p>
           </div>
-        ) : contacts.length === 0 ? (
+        ) : (contacts?.length || 0) === 0 ? (
           <div className="p-8 text-center">
             <Mail size={40} className="mx-auto text-gray-400 mb-3" />
             <p className="text-gray-600">No contact messages yet</p>
@@ -198,7 +219,7 @@ export default function ContactDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {contacts.map((contact) => (
+                {(contacts || []).map((contact) => (
                   <tr key={contact._id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 text-gray-900 font-medium">{contact.name}</td>
                     <td className="px-6 py-4 text-gray-600">{contact.mobile}</td>
@@ -235,7 +256,7 @@ export default function ContactDashboard() {
                         </span>
                       )}
                       <button
-                        onClick={() => handleDelete(contact._id)}
+                        onClick={() => setDeleteConfirm({ visible: true, contactId: contact._id })}
                         className="px-3 py-1 text-xs font-medium rounded bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
                       >
                         Delete
@@ -290,6 +311,37 @@ export default function ContactDashboard() {
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
               >
                 Mark Contacted
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteConfirm.visible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-red-100 rounded-full flex-shrink-0">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900">Delete Contact</h3>
+            </div>
+            <p className="text-gray-600">
+              Are you sure you want to delete this contact? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end pt-2">
+              <button
+                onClick={() => setDeleteConfirm({ visible: false, contactId: null })}
+                className="px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteConfirm.contactId && handleDelete(deleteConfirm.contactId)}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+              >
+                Delete
               </button>
             </div>
           </div>

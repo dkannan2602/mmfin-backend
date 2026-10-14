@@ -36,6 +36,10 @@ export const authAPI = {
     api.post('/auth/login', { email, password }),
   logout: () => api.get('/auth/logout'),
   getMe: () => api.get('/auth/me'),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    api.patch('/auth/change-password', { currentPassword, newPassword }),
+  changeEmail: (currentPassword: string, newEmail: string) =>
+    api.patch('/auth/change-email', { currentPassword, newEmail }),
 };
 
 export const contactAPI = {
@@ -52,6 +56,25 @@ export const contactAPI = {
   updateStatus: (id: string, status: string, notes?: string) =>
     api.patch(`/contact/${id}`, { status, notes }),
   delete: (id: string) => api.delete(`/contact/${id}`),
+};
+
+export const settingsAPI = {
+  get: () => api.get('/settings'),
+  update: (data: {
+    officeAddress: string;
+    phone: string;
+    email: string;
+    businessHours: string;
+  }) => api.patch('/settings', data),
+};
+
+export const quickAPI = {
+  submit: (data: { loanType: string; mobileNumber: string }) =>
+    api.post('/quick/submit', data),
+  getAll: () => api.get('/quick'),
+  updateStatus: (id: string, status: string, notes?: string) =>
+    api.patch(`/quick/${id}`, { status, notes }),
+  delete: (id: string) => api.delete(`/quick/${id}`),
 };
 
 export default api;
