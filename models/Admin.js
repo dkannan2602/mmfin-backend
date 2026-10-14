@@ -27,7 +27,8 @@ const adminSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  passwordChangedAt: Date
 });
 
 // Hash password before saving
