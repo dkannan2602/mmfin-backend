@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RealFinance Admin Backend
 
-## Getting Started
+Node.js + Express + MongoDB backend for the RealFinance admin panel.
 
-First, run the development server:
+## Setup Instructions
 
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (running locally or cloud connection string)
+- npm or yarn
+
+### Installation
+
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Configure Environment Variables**
+   
+   Update `.env` file with your settings:
+   ```
+   MONGODB_URI=mongodb://localhost:27017/realfinance
+   JWT_SECRET=your-secret-key-change-in-production
+   PORT=5000
+   NODE_ENV=development
+   ```
+
+3. **Create Default Admin User**
+   
+   Run the seed script to create the default admin account:
+   ```bash
+   node scripts/seedAdmin.js
+   ```
+
+   This creates:
+   - Email: `dkadmin@gmail.com`
+   - Password: `admin@123`
+
+### Running the Server
+
+**Development Mode** (with auto-reload):
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Production Mode**:
+```bash
+npm start
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The server will run on `http://localhost:5000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## API Endpoints
 
-## Learn More
+### Authentication
 
-To learn more about Next.js, take a look at the following resources:
+#### Login
+- **POST** `/api/auth/login`
+- Body: `{ email: string, password: string }`
+- Returns: `{ success: boolean, token: string, admin: {...} }`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Register (Admin only - use seedAdmin.js instead)
+- **POST** `/api/auth/register`
+- Body: `{ email: string, password: string, name: string }`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### Get Current Admin (Protected)
+- **GET** `/api/auth/me`
+- Headers: `Authorization: Bearer <token>`
 
-## Deploy on Vercel
+#### Logout
+- **GET** `/api/auth/logout`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Health Check
+- **GET** `/api/health`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Database Models
+
+### Admin Model
+```javascript
+{
+  email: String (unique),
+  password: String (hashed),
+  name: String,
+  role: String (admin/superadmin),
+  createdAt: Date
+}
+```
+
+## Middleware
+
+### Authentication Middleware
+- Verifies JWT tokens
+- Adds admin info to request object
+- Returns 401 if token is invalid or missing
+
+## Security Features
+
+- Password hashing with bcryptjs
+- JWT token-based authentication
+- CORS enabled for frontend
+- Environment variables for secrets
+- Token expiration (7 days)
+
+## Frontend Integration
+
+The frontend expects:
+- Backend running on `http://localhost:5000`
+- Tokens stored in `authToken` cookie
+- Admin info in `adminInfo` cookie
+
+## Testing
+
+### Test Login
+```bash
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "dkadmin@gmail.com",
+    "password": "admin@123"
+  }'
+```
+
+### Test Protected Route
+```bash
+curl -X GET http://localhost:5000/api/auth/me \
+  -H "Authorization: Bearer <your-token>"
+```
+
+## Troubleshooting
+
+### MongoDB Connection Error
+- Ensure MongoDB is running: `mongod`
+- Check connection string in `.env`
+
+### Port Already in Use
+- Change PORT in `.env` file
+- Or kill process using port 5000: `lsof -ti:5000 | xargs kill -9`
+
+### Token Issues
+- Clear cookies in browser
+- Re-login to get new token
+- Check JWT_SECRET in `.env`
