@@ -1,10 +1,60 @@
+# Dependencies
 node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
 .env
 .env.local
-.DS_Store
-npm-debug.log
-yarn-error.log
+.env.*.local
+
+# IDE and Editor
 .vscode/
 .idea/
-dist/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+npm-debug.log
+npm-debug.log*
+yarn-error.log
+yarn-debug.log*
+lerna-debug.log*
+*.log
+
+# Next.js
+.next/
+out/
 build/
+dist/
+
+# Testing
+.nyc_output
+coverage/
+
+# Production
+.env.production
+
+# Misc
+.cache
+.parcel-cache
+.tern-port
+.vscode-test
+.yarn/cache
+.yarn/unplugged
