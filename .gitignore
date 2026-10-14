@@ -43,6 +43,16 @@ dist/
 build/
 out/
 
+# Next.js (if used)
+.next/
+
+# Testing
+.nyc_output
+coverage/
+
+# Production
+.env.production
+
 # Runtime data
 pids/
 *.pid
@@ -52,11 +62,7 @@ pids/
 # Misc
 .cache
 .parcel-cache
-.next
-out
 .nuxt
-dist
-.cache/
 .vuepress/dist
 .serverless/
 .fusebox/
