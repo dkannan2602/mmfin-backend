@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { Twitter } from "lucide-react";
 import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Twitter,
-} from "lucide-react";
+  BrandFacebook,
+  BrandInstagram,
+  BrandWhatsapp,
+} from "tabler-icons-react";
 
 const footerLinks = {
   Services: [
@@ -30,6 +31,12 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-gray-950 text-gray-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -49,9 +56,9 @@ export default function Footer() {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: Facebook, label: "Facebook", href: "#" },
-                { icon: Instagram, label: "Instagram", href: "#" },
-                { icon: Linkedin, label: "LinkedIn", href: "#" },
+                { icon: BrandFacebook, label: "Facebook", href: "#" },
+                { icon: BrandInstagram, label: "Instagram", href: "#" },
+                { icon: BrandWhatsapp, label: "WhatsApp", href: "#" },
                 { icon: Twitter, label: "Twitter", href: "#" },
               ].map((social) => (
                 <a
@@ -91,10 +98,10 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} RealFinance. All rights reserved.
+            &copy; {year || 2026} RealFinance. All rights reserved.
           </p>
           <p className="text-gray-600 text-xs">
-            Designed & developed with ❤️ for our customers
+            Designed & developed for our customers
           </p>
         </div>
       </div>
