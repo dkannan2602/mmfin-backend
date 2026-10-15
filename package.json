@@ -1,34 +1,28 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "realfinance-backend",
+  "version": "1.0.0",
   "private": true,
+  "description": "RealFinance Backend API",
+  "main": "server.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "loan",
+    "finance",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@radix-ui/react-dropdown-menu": "^2.2.0",
-    "axios": "^1.20.0",
-    "embla-carousel": "^8.6.0",
-    "embla-carousel-react": "^8.6.0",
-    "js-cookie": "^3.0.8",
-    "lucide-react": "^0.344.0",
-    "next": "16.4.0",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "tabler-icons-react": "^1.56.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/turbopack": "^4",
-    "@types/js-cookie": "^3.0.6",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.0",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.1.0",
+    "nodemon": "^3.0.1"
   }
 }
