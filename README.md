@@ -1,6 +1,6 @@
-# RealFinance Admin Backend
+# Madurai Meenakshi Finance Admin Backend
 
-Node.js + Express + MongoDB backend for the RealFinance admin panel.
+Node.js + Express + MongoDB backend for the Madurai Meenakshi Finance admin panel.
 
 ## Setup Instructions
 
@@ -20,7 +20,7 @@ Node.js + Express + MongoDB backend for the RealFinance admin panel.
    
    Update `.env` file with your settings:
    ```
-   MONGODB_URI=mongodb://localhost:27017/realfinance
+   MONGODB_URI=mongodb://localhost:27017/madurai-meenakshi-finance
    JWT_SECRET=your-secret-key-change-in-production
    PORT=5000
    NODE_ENV=development

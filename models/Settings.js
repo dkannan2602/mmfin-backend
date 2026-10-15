@@ -12,7 +12,7 @@ const settingsSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      default: 'info@realfinance.in'
+      default: 'info@maduraimeenakshifinance.in'
     },
     businessHours: {
       type: String,

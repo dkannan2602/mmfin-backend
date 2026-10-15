@@ -1,8 +1,8 @@
 {
-  "name": "realfinance-backend",
+  "name": "madurai-meenakshi-finance-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "RealFinance Backend API",
+  "description": "Madurai Meenakshi Finance Backend API",
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",
