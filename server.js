@@ -21,7 +21,12 @@ connectDB()
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'http://localhost:3000'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'https://mmfin-frontend.vercel.app'
+  ],
   credentials: true
 }));
 app.use(express.json());
