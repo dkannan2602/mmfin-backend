@@ -20,15 +20,28 @@ connectDB()
   });
 
 // Middleware
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-    'https://mmfin-frontend.vercel.app'
-  ],
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  process.env.FRONTEND_URL || 'https://mmfin-frontend.vercel.app'
+];
+
+// Allow all Vercel deployments and any origin in development
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || origin.includes('localhost') || origin.includes('vercel.app')) {
+      callback(null, true);
+    } else if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
